@@ -12,9 +12,9 @@ load_dotenv()
 
 st.set_page_config(page_title="RAG AI Assistant", page_icon="📄")
 st.title("📄 RAG AI Assistant")
-st.write("PDF yüklə və sənəddən sual soruş.")
+st.write("Upload a PDF and ask questions about the document.")
 
-uploaded_file = st.file_uploader("PDF faylını seç", type=["pdf"])
+uploaded_file = st.file_uploader("Select a PDF file", type=["pdf"])
 
 if uploaded_file is not None:
 
@@ -28,16 +28,16 @@ if uploaded_file is not None:
 
     qa_chain = create_qa_chain(retriever)
 
-    query = st.text_input("Sualını yaz")
+    query = st.text_input("Enter your question")
 
     if query:
 
         result = qa_chain.invoke({"query": query})
 
-        st.subheader("Cavab")
+        st.subheader("Answer")
         st.write(result["result"])
 
-        st.subheader("İstifadə olunan hissələr")
+        st.subheader("Source chunks used")
 
         for i, doc in enumerate(result["source_documents"], 1):
             st.markdown(f"**Chunk {i}:**")
