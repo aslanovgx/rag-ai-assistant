@@ -1,140 +1,133 @@
-# 📄 RAG AI Assistant
+# RAG AI Assistant
 
-A simple **Retrieval-Augmented Generation (RAG)** application that allows users to upload a PDF and ask questions about its content.
+A full-stack AI assistant that supports both general chatbot interaction and document-grounded question answering using a Retrieval-Augmented Generation (RAG) pipeline.
+
+The system allows users to upload PDF and DOCX files and ask questions based on their content, returning grounded answers along with relevant source chunks.
 
 ---
 
 ## 🚀 Features
 
-* 📥 Upload PDF documents
-* ✂️ Automatic text chunking
-* 🔍 Semantic search using vector embeddings
-* 🧠 Context-aware answers using LLM
-* 📚 Source chunk transparency (see where answers come from)
+- General chatbot endpoint powered by an LLM
+- Document-based Q&A using RAG
+- PDF and DOCX file upload support
+- Text cleaning and chunking pipeline
+- Semantic search using embeddings + FAISS
+- Grounded answers with source traceability
+- Custom prompt to reduce hallucination
+- Clean backend architecture with service separation
 
 ---
 
-## 🧠 How It Works
+## 🧠 Tech Stack
 
-1. Upload a PDF file
-2. The system:
+### Backend
+- FastAPI
+- Python
+- LangChain
+- FAISS (vector search)
+- OpenRouter (LLM access)
+- HuggingFace Embeddings
 
-   * Loads and cleans the text
-   * Splits it into smaller chunks
-   * Converts chunks into vector embeddings
-   * Stores them in a FAISS vector database
-3. When a question is asked:
-
-   * The system retrieves the most relevant chunks
-   * Passes them to the LLM
-   * Generates a context-aware answer
+### AI / Retrieval
+- `sentence-transformers/all-MiniLM-L6-v2`
+- RetrievalQA chain
+- Custom prompt engineering
+- In-memory vectorstore (request-based RAG)
 
 ---
 
 ## 🏗️ Project Structure
 
-```
-rag-ai-assistant/
-│
-├── app.py                 # Streamlit UI
-├── requirements.txt
-├── .env
-├── README.md
-│
-├── src/
-│   ├── loader.py          # PDF loading
-│   ├── splitter.py        # Text chunking
-│   ├── embeddings.py      # Embedding model
-│   ├── vectorstore.py     # FAISS database
-│   ├── rag_chain.py       # LLM + Retrieval logic
-│   ├── utils.py           # File handling
-│   └── text_cleaner.py    # Text preprocessing
-│
-└── data/
-```
-
----
-
-## ⚙️ Installation
-
 ```bash
-git clone https://github.com/aslanovgx/rag-ai-assistant.git
-cd rag-ai-assistant
+backend/
+├── main.py              # API routes
+├── llm_service.py       # LLM initialization
+├── rag_service.py       # RAG pipeline logic
+└── file_service.py      # File validation & temp storage
 
+src/
+├── loader.py            # PDF/DOCX loading
+├── splitter.py          # Text chunking
+├── embeddings.py        # Embedding model
+├── vectorstore.py       # FAISS handling
+├── rag_chain.py         # RetrievalQA + prompt
+├── text_cleaner.py      # Text preprocessing
+└── utils.py
+
+
+🔌 API Endpoints
+
+GET /
+
+Check if the API is running.
+
+GET /health
+
+Health check endpoint.
+
+POST /chat
+
+General chatbot endpoint using LLM.
+
+POST /upload
+
+Upload and validate a PDF or DOCX file.
+
+POST /ask-file
+
+Ask a question about an uploaded document using RAG.
+
+⸻
+
+⚙️ How It Works
+
+General Chat
+
+User message → LLM → response
+
+File Chat (RAG)
+	1.	File upload
+	2.	Document parsing (PDF/DOCX)
+	3.	Text cleaning
+	4.	Chunking
+	5.	Embedding generation
+	6.	FAISS vector search
+	7.	Relevant chunk retrieval
+	8.	LLM generates grounded answer
+	9.	Sources returned with response
+
+⸻
+
+▶️ Running the Backend
+
+Install dependencies:
 pip install -r requirements.txt
-```
 
----
+Run the server:
+uvicorn backend.main:app --reload
 
-## 🔑 Environment Variables
+Open Swagger UI:
+http://localhost:8000/docs
 
-Create a `.env` file:
+🧩 Key Design Decisions
+	•	Used RAG instead of raw LLM to handle large documents efficiently
+	•	Separated backend into service layers (LLM, RAG, file handling)
+	•	Implemented in-memory vectorstore for request-based document processing
+	•	Added custom prompt to enforce grounded answers and reduce hallucination
 
-```
-OPENROUTER_API_KEY=your_api_key_here
-```
+⸻
 
----
+🚧 Future Improvements
+	•	User authentication system
+	•	Persistent vector database (e.g. Pinecone, Weaviate)
+	•	Multi-user document isolation
+	•	Voice input support
+	•	Frontend UI (Next.js)
 
-## ▶️ Run the App
+⸻
 
-```bash
-streamlit run app.py
-```
-
-Then open:
-
-```
-http://localhost:8501
-```
-
----
-
-## 🧪 Example Questions
-
-* What is artificial intelligence?
-* What are the types of machine learning?
-* Explain neural networks in simple terms
-* What challenges does AI face?
-
----
-
-## 🛠️ Tech Stack
-
-* Python
-* Streamlit
-* LangChain
-* FAISS
-* OpenRouter (LLM API)
-* HuggingFace / OpenAI Embeddings
-
----
-
-## 📌 Notes
-
-* Chunk size optimized to **700 / 100 overlap** for better retrieval
-* Uses **semantic search** instead of keyword search
-* Designed as an MVP for RAG systems
-
----
-
-## 🎯 Future Improvements
-
-* Persistent vector database (no reprocessing on every upload)
-* Multi-document support
-* Chat history memory
-* Better UI/UX
-* Streaming responses
-
----
-
-## 👨‍💻 Author
-
-**Mustafa Aslanov**
-
-* GitHub: https://github.com/aslanovgx
-* Portfolio: https://portfolio-website-bay-iota-74.vercel.app
-
----
-
-## ⭐ If you like this project, give it a star!
+📌 Notes
+	•	Version 1 does not include authentication
+	•	Supports PDF and DOCX formats
+	•	Designed as a modular and extensible AI system
