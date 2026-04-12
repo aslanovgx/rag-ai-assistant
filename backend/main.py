@@ -63,6 +63,10 @@ def ask_file(file: UploadFile = File(...), question: str = Form(...)):
         result["filename"] = filename
         return result
 
+    except Exception as e:
+        print("ASK-FILE ERROR:", repr(e))
+        raise HTTPException(status_code=500, detail=str(e))
+
     finally:
         if os.path.exists(temp_path):
             os.unlink(temp_path)
