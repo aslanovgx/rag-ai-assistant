@@ -31,7 +31,7 @@ Users can upload PDF/DOCX files and ask questions, receiving grounded answers wi
 
 ---
 
-👤 Author
+## 👤 Author
 
-Mustafa Aslanov
-GitHub: https://github.com/aslanovgx
+**Mustafa Aslanov**  
+🔗 GitHub: https://github.com/aslanovgx
