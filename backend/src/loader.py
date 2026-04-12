@@ -52,10 +52,3 @@ def load_document(file_path: str):
         raise ValueError(f"Unsupported file type: {extension}")
 
     return process_documents(raw_docs, file_path)
-
-
-# Now:
-# - Each loader handles only its file type
-# - A shared processing function applies cleaning and metadata
-
-# This made the ingestion pipeline more modular, reusable, and easier to extend.

@@ -34,15 +34,3 @@ def answer_question_from_file(file_path: str, question: str):
         "answer": result["result"],
         "sources": sources,
     }
-    
-    
-# rag_service.py:
-# - Bu faylda document-based question answering üçün əsas RAG pipeline service funksiyası yaradılıb.
-# - Məqsəd file processing və retrieval logic-i API route qatından ayırmaqdır.
-# - Bu yanaşma backend-i daha modulyar edir və route-ları sadə saxlayır.
-# - Eyni service sonradan başqa endpoint-lər və ya background processing üçün də istifadə oluna bilər.
-
-
-# I extracted the document-grounded QA pipeline into a dedicated RAG service module.
-# This separates AI processing logic from HTTP request handling and makes the backend more modular and maintainable.
-# It also improves reusability, since the same service can later be used by multiple endpoints.
