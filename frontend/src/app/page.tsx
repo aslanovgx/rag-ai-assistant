@@ -25,6 +25,7 @@ export default function Home() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement | null>(null);
+  const [openSources, setOpenSources] = useState<Record<number, boolean>>({});
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
@@ -212,21 +213,34 @@ export default function Home() {
                     msg.sources.length > 0 &&
                     !msg.content.includes("not explicitly available") && (
                       <div className="space-y-2">
-                        <p className="text-xs font-semibold text-gray-500 px-1">
-                          Sources
-                        </p>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setOpenSources((prev) => ({
+                              ...prev,
+                              [(msg.id ?? i)]: !prev[msg.id ?? i],
+                            }))
+                          }
+                          className="text-xs font-semibold text-gray-500 px-1 hover:text-black transition"
+                        >
+                          {openSources[msg.id ?? i] ? "Hide Sources" : "Show Sources"}
+                        </button>
 
-                        {msg.sources.map((src, idx) => (
-                          <div
-                            key={idx}
-                            className="rounded-lg border border-gray-200 bg-white p-3 text-xs text-black"
-                          >
-                            <div className="mb-1 text-gray-500">
-                              Page: {src.page ?? "-"}
-                            </div>
-                            <div>{src.content.slice(0, 200)}...</div>
+                        {openSources[msg.id ?? i] && (
+                          <div className="space-y-2">
+                            {msg.sources.map((src, idx) => (
+                              <div
+                                key={idx}
+                                className="rounded-lg border border-gray-200 bg-white p-3 text-xs text-black"
+                              >
+                                <div className="mb-1 text-gray-500">
+                                  Page: {src.page ?? "-"}
+                                </div>
+                                <div>{src.content.slice(0, 200)}...</div>
+                              </div>
+                            ))}
                           </div>
-                        ))}
+                        )}
                       </div>
                     )}
                 </div>

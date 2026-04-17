@@ -6,10 +6,6 @@ from langchain_core.prompts import ChatPromptTemplate
 
 
 def get_llm_chain():
-    """
-    Create a general-purpose chat LLM with a controlled prompt.
-    """
-
     api_key = os.getenv("OPENROUTER_API_KEY")
     if not api_key:
         raise HTTPException(
@@ -22,6 +18,7 @@ def get_llm_chain():
         api_key=SecretStr(api_key),
         base_url="https://openrouter.ai/api/v1",
         temperature=0,
+        model_kwargs={"max_tokens": 500},
     )
 
     prompt = ChatPromptTemplate.from_messages([
@@ -39,5 +36,4 @@ Rules:
     ])
 
     chain = prompt | llm
-
     return chain

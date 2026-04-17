@@ -7,11 +7,6 @@ from langchain_core.prompts import PromptTemplate
 
 
 def create_qa_chain(retriever):
-    """
-    Create a RetrievalQA chain that combines retriever + LLM
-    with a stricter custom prompt for document-grounded answers.
-    """
-
     api_key = os.getenv("OPENROUTER_API_KEY")
     if not api_key:
         raise ValueError("OPENROUTER_API_KEY is missing in the .env file.")
@@ -21,6 +16,7 @@ def create_qa_chain(retriever):
         api_key=SecretStr(api_key),
         base_url="https://openrouter.ai/api/v1",
         temperature=0,
+        model_kwargs={"max_tokens": 500},
     )
 
     prompt_template = """

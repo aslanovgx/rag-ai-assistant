@@ -33,13 +33,20 @@ def health_check():
 
 @app.post("/chat")
 def chat(request: ChatRequest):
-    chain = get_llm_chain()
-    response = chain.invoke({"input": request.message})
+    try:
+        chain = get_llm_chain()
+        response = chain.invoke({"input": request.message})
 
-    return {
-        "reply": response.content
-    }
+        if hasattr(response, "content"):
+            reply = response.content
+        else:
+            reply = str(response)
 
+        return {"reply": reply}
+
+    except Exception as e:
+        print("CHAT ERROR:", repr(e))
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/upload")
 def upload_file(file: UploadFile = File(...)):
