@@ -8,7 +8,7 @@ Users can upload PDF/DOCX files and ask questions, receiving grounded answers wi
 
 ## 🚀 Live Demo
 
-- 🌐 Frontend: https://rag-ai-assistant-c6f9.vercel.app/
+- 🌐 Frontend: https://rag-ai-assistant-c6f9.vercel.app
 - ⚙️ Backend:  https://rag-ai-assistant-cg9r.onrender.com
 - 📚 API Docs: https://rag-ai-assistant-cg9r.onrender.com/docs
 
